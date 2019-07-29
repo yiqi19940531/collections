@@ -1,0 +1,11 @@
+maintainers:
+- name: Steven Groeger
+  email: groeges@uk.ibm.com
+  github-id: groeges
+default-template: default
+default-image: java-microprofile
+default-pipeline: default
+default-dashboard: default
+images:
+- id: java-microprofile
+  image: appsody/java-microprofile:0.2
