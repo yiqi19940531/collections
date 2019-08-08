@@ -98,6 +98,7 @@ then
                 # build template archives
                 tar -czf $assets_dir/$pipeline_archive -C $pipeline_build .
                 echo -e "--- Created pipeline archive: $pipeline_archive"
+                rm -fr $pipeline_build
             fi
 
             echo "- id: $pipeline_id" >> $index_file
@@ -129,7 +130,7 @@ then
 
             if [ $build = true ]
             then
-                dashboard_build=$assets_dir/pipeline_temp
+                dashboard_build=$assets_dir/dashboard_build
                 mkdir -p $dashboard_build
                 
                 dashboard_manifest=$dashboard_build/manifest.yaml
@@ -150,6 +151,7 @@ then
                 # build template archives
                 tar -czf $assets_dir/$dashboard_archive -C $dashboard_build .
                 echo -e "--- Created dashboard archive: $dashboard_archive"
+                rm -fr $dashboard_build
             fi
 
             echo "- id: $dashboard_id" >> $index_file
