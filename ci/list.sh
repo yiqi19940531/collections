@@ -28,8 +28,12 @@ then
         fi
     done
 else
+<<<<<<< Upstream, based on origin/master
 
     # ignore TRAVIS_TAG if BUILD_ALL is set
+=======
+    # Ignore TRAVIS_TAG if BUILD_ALL is set
+>>>>>>> 20bbcaa Update comment regarding build all option
     if [ $TRAVIS_TAG ] && [ ! $BUILD_ALL ]
     then
         stack_id=`echo ${TRAVIS_TAG/-v[0-9]*/}`
