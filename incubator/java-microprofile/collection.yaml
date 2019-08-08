@@ -8,4 +8,5 @@ default-pipeline: default
 default-dashboard: default
 images:
 - id: java-microprofile
-  image: appsody/java-microprofile:0.2
+  image: kabanero/java-microprofile:0.2
+version: 0.0.2
