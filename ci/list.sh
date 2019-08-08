@@ -27,7 +27,7 @@ then
         fi
     done
 else
-    # ignore TRAVIS_TAG if BUILD_ALL is set
+    # Ignore TRAVIS_TAG if BUILD_ALL is set
     if [ $TRAVIS_TAG ] && [ ! $BUILD_ALL ]
     then
         stack_id=`echo ${TRAVIS_TAG/-v[0-9]*/}`
