@@ -9,7 +9,6 @@ then
 fi
 
 base_dir="$(cd "$1" && pwd)"
-base_dir_name=$(basename $base_dir)
 
 . $base_dir/ci/env.sh
 
@@ -30,7 +29,7 @@ then
     done
 else
 
-    if [ $TRAVIS_TAG ]
+    if [ $TRAVIS_TAG ] && [ ! $BUILD_ALL ]
     then
         stack_id=`echo ${TRAVIS_TAG/-v[0-9]*/}`
         echo "Listing stacks for this release"
@@ -47,13 +46,9 @@ else
             do
                 if [ -f $stack_exists ]
                 then
-<<<<<<< Upstream, based on Appsody-stacks/master
                     var=`echo ${stack_exists#"$base_dir/"}`
-=======
-                    var=`echo $stack_exists | sed 's/.*'$base_dir_name'\///'`
->>>>>>> 7f5d51f Fixes to get collection build to work
                     repo_stack=`awk '{split($1, a, "/*"); print a[1]"/"a[2]}' <<< $var`
-                    if [ $TRAVIS_TAG ] && [[ $repo_stack != */$stack_id ]]
+                    if [ $TRAVIS_TAG ] && [ ! $BUILD_ALL ] && [[ $repo_stack != */$stack_id ]]
                     then
                         continue;
                     fi
