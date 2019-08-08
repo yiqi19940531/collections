@@ -27,7 +27,7 @@ then
         fi
     done
 else
-    if [ $TRAVIS_TAG ]
+    if [ $TRAVIS_TAG ] && [ ! $BUILD_ALL ]
     then
         stack_id=`echo ${TRAVIS_TAG/-v[0-9]*/}`
         echo "Listing stacks for this release"
@@ -51,7 +51,7 @@ else
                     var=`echo $stack_exists | sed 's/.*'$base_dir_name'\///'`
 >>>>>>> 7f5d51f Fixes to get collection build to work
                     repo_stack=`awk '{split($1, a, "/*"); print a[1]"/"a[2]}' <<< $var`
-                    if [ $TRAVIS_TAG ] && [[ $repo_stack != */$stack_id ]]
+                    if [ $TRAVIS_TAG ] && [ ! $BUILD_ALL ] && [[ $repo_stack != */$stack_id ]]
                     then
                         continue;
                     fi
