@@ -9,6 +9,9 @@ os:
 services:
   - docker
 
+before_install:
+    - go get gopkg.in/mikefarah/yq.v2
+
 script:
   - . ./ci/build.sh .
 
