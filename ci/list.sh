@@ -28,13 +28,9 @@ then
         fi
     done
 else
-<<<<<<< Upstream, based on origin/master
 
     # ignore TRAVIS_TAG if BUILD_ALL is set
-=======
-    # Ignore TRAVIS_TAG if BUILD_ALL is set
->>>>>>> 20bbcaa Update comment regarding build all option
-    if [ $TRAVIS_TAG ] && [ ! $BUILD_ALL ]
+    if [ $TRAVIS_TAG ] && [ -z $BUILD_ALL ]
     then
         stack_id=`echo ${TRAVIS_TAG/-v[0-9]*/}`
         echo "Listing stacks for this release"
@@ -53,7 +49,7 @@ else
                 then
                     var=`echo ${stack_exists#"$base_dir/"}`
                     repo_stack=`awk '{split($1, a, "/*"); print a[1]"/"a[2]}' <<< $var`
-                    if [ $TRAVIS_TAG ] && [ ! $BUILD_ALL ] && [[ $repo_stack != */$stack_id ]]
+                    if [ $TRAVIS_TAG ] && [ -z $BUILD_ALL ] && [[ $repo_stack != */$stack_id ]]
                     then
                         continue;
                     fi
