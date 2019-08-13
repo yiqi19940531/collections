@@ -8,8 +8,9 @@ repo_name=$4
 index_file=$5
 assets_dir=$base_dir/ci/assets
 stack_id=$(basename $stack_dir)
-release_url="https://github.com/$TRAVIS_REPO_SLUG/releases/download"
 collection=$stack_dir/collection.yaml
+
+. $base_dir/ci/env.sh
 
 if [ -z $ASSET_LIST ]; then
     asset_list="pipelines dashboards deploys"
@@ -73,7 +74,7 @@ process_assets () {
 
                 # Add details of the asset tar.gz into the index file
                 echo "- id: $asset_id" >> $index_file
-                echo "  url: $release_url/$release_name/$asset_archive" >> $index_file
+                echo "  url: $RELEASE_URL/$RELEASE_NAME/$asset_archive" >> $index_file
                 if [ -f $assets_dir/$asset_archive ]
                 then
                     sha256=$(cat $assets_dir/$asset_archive | $sha256cmd | awk '{print $1}')
@@ -88,17 +89,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     sha256cmd="shasum --algorithm 256"    # Mac OSX
 else
     sha256cmd="sha256sum "  # other OSs
-fi
-
-if [ -z $BUILD_ALL ]
-then
-   release_name=$stack_id-v$stack_version
-else
-    if [ -f $base_dir/VERSION ]; then
-        release_name=$(cat $base_dir/VERSION)
-    else
-        release_name=$BUILD_ALL
-    fi
 fi
 
 if [ -f $collection ]
