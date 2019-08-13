@@ -49,7 +49,7 @@ else
                 then
                     var=`echo ${stack_exists#"$base_dir/"}`
                     repo_stack=`awk '{split($1, a, "/*"); print a[1]"/"a[2]}' <<< $var`
-                    if [ $TRAVIS_TAG ] && [ -z $BUILD_ALL ] && [[ $repo_stack != */$stack_id ]]
+                    if [ -z $BUILD_ALL ] && [ $TRAVIS_TAG ] && [[ $repo_stack != */$stack_id ]]
                     then
                         continue;
                     fi
