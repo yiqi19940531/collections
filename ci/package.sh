@@ -77,13 +77,6 @@ do
                     echo -e "\n- SKIPPING stack: $repo_name/$stack_id"
                 fi
 
-                if [ -z $BUILD_ALL ]
-                then
-                    release_name=$stack_id-v$stack_version
-                else
-                    release_name=$BUILD_ALL
-                fi
-
                 echo "  $stack_id:" >> $index_file_v1
                 echo "  - updated: $(date -u +'%Y-%m-%dT%H:%M:%S%z')"  >> $index_file_v1
                 sed 's/^/    /' $stack >> $index_file_v1
@@ -115,14 +108,14 @@ do
                         fi
 
                         echo "      - id: $template_id" >> $index_file_v2
-                        echo "        url: $RELEASE_URL/$release_name/$template_archive" >> $index_file_v2
+                        echo "        url: $RELEASE_URL/$RELEASE_NAME/$template_archive" >> $index_file_v2
 
                         echo "      - id: $template_id" >> $index_file_test
                         echo "        url: file://$assets_dir/$template_archive" >> $index_file_test
 
                         if [ $i -eq 0 ]
                         then
-                            echo "    - $RELEASE_URL/$release_name/$template_archive" >> $index_file_v1
+                            echo "    - $RELEASE_URL/$RELEASE_NAME/$template_archive" >> $index_file_v1
                             ((i+=1))
                         fi
                     fi
