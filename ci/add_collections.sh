@@ -38,7 +38,7 @@ do
     repo_dir=$base_dir/$repo_name
     if [ -d $repo_dir ]
     then
-        echo -e "\nProcessing repo: $repo_name"
+        echo -e "\nProcessing collections repo: $repo_name"
 
         index_file_v2=$assets_dir/$repo_name-index.yaml
         index_file_v2_temp=$assets_dir/$repo_name-index-temp.yaml
