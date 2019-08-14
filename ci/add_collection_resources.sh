@@ -100,6 +100,12 @@ process_assets () {
             do
                 if [ -d $asset_dir ]
                 then
+                    # if we havent added the asset_type to the index then add it
+                    if [ $added_asset_type -eq 0 ]; then
+                        # put the asset_types value into the yaml, ie pipelines:
+                        echo "$asset_types:" >> $index_file
+                        added_asset_type=1
+                    fi 
                     # determine the assest id based on the subdirectory 
                     asset_id=$(basename $asset_dir)
                 
@@ -186,7 +192,7 @@ then
     do
         asset_type="${asset%?}"
         if [ -d $base_dir/common/$asset ]; then
-            echo "We have some common $asset to process"
+            # echo "We have some common $asset to process"
             for asset_dir in $base_dir/common/$asset/*/
             do
                 if [ -d $asset_dir ]
