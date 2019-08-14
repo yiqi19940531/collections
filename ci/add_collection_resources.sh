@@ -18,6 +18,35 @@ else
     asset_list=$ASSET_LIST
 fi
 
+build_asset_tar () {
+    asset_build=$assets_dir/asset_temp
+    mkdir -p $asset_build
+    
+    # copy all the files from the assets directoty to a build directory
+    cp -r $1/* $asset_build
+
+    # Generate a manifest.yaml file for each file in the tar.gz file
+    asset_manifest=$asset_build/manifest.yaml
+    echo "contents:" > $asset_manifest
+    
+    # for each of the assets generate a sha256 and add it to the manifest.yaml
+    for asset_path in $(find $asset_build -type f -name '*')
+    do
+        asset_name=${asset_path#$asset_build/}
+        if [ -f $asset_path ] && [ "$(basename -- $asset_path)" != "manifest.yaml" ]
+        then
+            sha256=$(cat $asset_path | $sha256cmd | awk '{print $1}')
+            echo "- file: $asset_name" >> $asset_manifest
+            echo "  sha256: $sha256" >> $asset_manifest
+        fi
+    done
+    
+    # build template archives
+    tar -czf $assets_dir/$2 -C $asset_build .
+    echo -e "--- Created $asset_type archive: $2"
+    rm -fr $asset_build
+}
+
 process_assets () {
     asset_types=$1
     asset_type="${asset_types%?}"
@@ -25,8 +54,7 @@ process_assets () {
     #check to see whether we have a directory for the specific asset
     if [ -d $stack_dir/$asset_types ]
     then
-        # put the asset_types value into the yaml, ie pipelines:
-        echo "$asset_types:" >> $index_file
+        added_asset_type=0
         
         # For all of the assets get the list of subdirectories
         # these will be the different grouping of the assets, ie default, prototype 
@@ -34,54 +62,62 @@ process_assets () {
         do
             if [ -d $asset_dir ]
             then
-                # determine the assest id based on the subdirectory 
-                asset_id=$(basename $asset_dir)
-                
-                # Determine the asset tar.gz filename to be used 
-                # to contain all of the asset files
-                asset_archive=$repo_name.$stack_id.$asset_type.$asset_id.tar.gz
-
-                # Only process the assets if we are building
-                if [ $build = true ]
-                then
-                    asset_build=$assets_dir/asset_temp
-                    mkdir -p $asset_build
+                # only process if the directory is not empty
+                if [ ! -z "$(ls -A -- "$asset_dir")" ]; then
+                    # if we havent added the asset_type to the index then add it
+                    if [ $added_asset_type -eq 0 ]; then
+                        # put the asset_types value into the yaml, ie pipelines:
+                        echo "$asset_types:" >> $index_file
+                        added_asset_type=1
+                    fi 
+                    # determine the assest id based on the subdirectory 
+                    asset_id=$(basename $asset_dir)
                     
-                    # copy all the files from the assets directoty to a build directory
-                    cp -r $asset_dir/* $asset_build
+                    # Determine the asset tar.gz filename to be used 
+                    # to contain all of the asset files
+                    asset_archive=$repo_name.$stack_id.$asset_type.$asset_id.tar.gz
 
-                    # Generate a manifest.yaml file for each file in the tar.gz file
-                    asset_manifest=$asset_build/manifest.yaml
-                    echo "contents:" > $asset_manifest
-                    
-                    # for each of the assets generate a sha256 and add it to the manifest.yaml
-                    for asset in "$asset_build"/*
-                    do
-                        if [ -f $asset ] && [ "$(basename -- $asset)" != "manifest.yaml" ]
-                        then
-                            sha256=$(cat $asset | $sha256cmd | awk '{print $1}')
-                            filename=$(basename -- $asset) 
-                            echo "- file: $filename" >> $asset_manifest
-                            echo "  sha256: $sha256" >> $asset_manifest
-                        fi
-                    done
-                   
-                    # build template archives
-                    tar -czf $assets_dir/$asset_archive -C $asset_build .
-                    echo -e "--- Created $asset_type archive: $asset_archive"
-                    rm -fr $asset_build
-                fi
+                    # Only process the assets if we are building
+                    if [ $build = true ]
+                    then
+                        build_asset_tar $asset_dir $asset_archive
+                    fi
 
-                # Add details of the asset tar.gz into the index file
-                echo "- id: $asset_id" >> $index_file
-                echo "  url: $RELEASE_URL/$RELEASE_NAME/$asset_archive" >> $index_file
-                if [ -f $assets_dir/$asset_archive ]
-                then
-                    sha256=$(cat $assets_dir/$asset_archive | $sha256cmd | awk '{print $1}')
-                    echo "  sha256: $sha256" >> $index_file
+                    # Add details of the asset tar.gz into the index file
+                    echo "- id: $asset_id" >> $index_file
+                    echo "  url: $RELEASE_URL/$RELEASE_NAME/$asset_archive" >> $index_file
+                    if [ -f $assets_dir/$asset_archive ]
+                    then
+                        sha256=$(cat $assets_dir/$asset_archive | $sha256cmd | awk '{print $1}')
+                        echo "  sha256: $sha256" >> $index_file
+                    fi
                 fi
             fi
         done
+       
+        if [ -d $base_dir/common/$asset_types ]; then
+            for asset_dir in $base_dir/common/$asset_types/*/
+            do
+                if [ -d $asset_dir ]
+                then
+                    # determine the assest id based on the subdirectory 
+                    asset_id=$(basename $asset_dir)
+                
+                    # Determine the asset tar.gz filename to be used 
+                    # to contain all of the asset files
+                    asset_archive=$repo_name.common.$asset_type.$asset_id.tar.gz
+
+                    # Add details of the asset tar.gz into the index file
+                    echo "- id: $asset_id" >> $index_file
+                    echo "  url: $RELEASE_URL/$RELEASE_NAME/$asset_archive" >> $index_file
+                    if [ -f $assets_dir/$asset_archive ]
+                    then
+                        sha256=$(cat $assets_dir/$asset_archive | $sha256cmd | awk '{print $1}')
+                        echo "  sha256: $sha256" >> $index_file
+                    fi
+                fi
+            done
+        fi
     fi
 }
 
@@ -144,6 +180,31 @@ then
             fi
         
             rm -fr $template_temp
+        fi
+    done
+    for asset in $asset_list
+    do
+        asset_type="${asset%?}"
+        if [ -d $base_dir/common/$asset ]; then
+            echo "We have some common $asset to process"
+            for asset_dir in $base_dir/common/$asset/*/
+            do
+                if [ -d $asset_dir ]
+                then
+                    # determine the assest id based on the subdirectory 
+                    asset_id=$(basename $asset_dir)
+                
+                    # Determine the asset tar.gz filename to be used 
+                    # to contain all of the asset files
+                    asset_archive=$repo_name.common.$asset_type.$asset_id.tar.gz
+
+                    # Only process the assets if we are building
+                    if [ $build = true ]
+                    then
+                        build_asset_tar $asset_dir $asset_archive
+                    fi
+               fi
+          done
         fi
     done
 fi
