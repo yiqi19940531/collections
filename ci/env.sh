@@ -18,7 +18,6 @@ if [ -z $RELEASE_URL ]; then
     export RELEASE_URL="https://github.com/$TRAVIS_REPO_SLUG/releases/download"
 fi
 
-
 # extension script should be called at end of the main script
 if [ -f $base_dir/ci/ext/env.sh ]
 then
