@@ -18,6 +18,12 @@ release_dir=$base_dir/ci/release
 
 mkdir -p $release_dir
 
+# call the extension script prior to processing any of the release assets
+if [ -f $base_dir/ci/ext/release.sh ]
+then
+    . $base_dir/ci/ext/release.sh $base_dir
+fi
+
 # iterate over each asset
 for asset in $assets_dir/*
 do
@@ -29,12 +35,12 @@ do
 done
 
 # dockerhub/docker registry login in
-echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin $DOCKER_REGISTRY
+#echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin $DOCKER_REGISTRY
 
 # iterate over each stack
 for repo_stack in $STACKS_LIST
 do
     stack_id=`echo ${repo_stack/*\//}`
     echo "Releasing stack images for: $stack_id"
-    docker push $DOCKERHUB_ORG/$stack_id
+    #docker push $DOCKERHUB_ORG/$stack_id
 done

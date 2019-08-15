@@ -18,13 +18,9 @@ if [ -z $RELEASE_URL ]; then
     export RELEASE_URL="https://github.com/$TRAVIS_REPO_SLUG/releases/download"
 fi
 
-if [ -z $BUILD_ALL ]
+
+# extension script should be called at end of the main script
+if [ -f $base_dir/ci/ext/env.sh ]
 then
-    export RELEASE_NAME="$stack_id-v$stack_version"
-else
-    if [ -f $base_dir/VERSION ]; then
-        export RELEASE_NAME="$(cat $base_dir/VERSION)"
-    else
-        export RELEASE_NAME="$BUILD_ALL"
-    fi
+    . $base_dir/ci/ext/env.sh
 fi

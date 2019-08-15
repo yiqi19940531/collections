@@ -85,9 +85,9 @@ do
                         yq r $all_stacks stacks.[$stack_to_use] > $one_stack
                         if [ -f $collection ]
                         then
-                            if [ -f $base_dir/ci/add_collection_resources.sh ]
+                            if [ -f $base_dir/ci/ext/add_collection_resources.sh ]
                             then
-                                . $base_dir/ci/add_collection_resources.sh $base_dir $stack_dir $stack_version $repo_name $one_stack
+                                . $base_dir/ci/ext/add_collection_resources.sh $base_dir $stack_dir $stack_version $repo_name $one_stack
                             fi
                         fi
                         yq p -i $one_stack stacks.[+]

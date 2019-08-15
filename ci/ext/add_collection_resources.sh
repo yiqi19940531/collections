@@ -75,7 +75,7 @@ process_assets () {
                     
                     # Determine the asset tar.gz filename to be used 
                     # to contain all of the asset files
-                    asset_archive=$repo_name.$stack_id.$asset_type.$asset_id.tar.gz
+                    asset_archive=$repo_name.$stack_id.v$stack_version.$asset_type.$asset_id.tar.gz
 
                     # Only process the assets if we are building
                     if [ $build = true ]
@@ -166,7 +166,7 @@ then
         if [ -d $template_dir ]
         then
             template_id=$(basename $template_dir)
-            template_archive=$repo_name.$stack_id.templates.$template_id.tar.gz
+            template_archive=$repo_name.$stack_id.v$stack_version.templates.$template_id.tar.gz
             template_temp=$assets_dir/tar_temp
             
             mkdir -p $template_temp
