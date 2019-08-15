@@ -15,10 +15,12 @@ if [ -z $STACKS_LIST ]; then
     . $base_dir/ci/list.sh $base_dir
 fi
 . $base_dir/ci/package.sh $base_dir
-if [ -f $base_dir/ci/add_collections.sh ]
+
+if [ -f $base_dir/ci/ext/build.sh ]
 then
-    . $base_dir/ci/add_collections.sh $base_dir
+    . $base_dir/ci/ext/build.sh $base_dir
 fi
+
 . $base_dir/ci/test.sh $base_dir
 
 python $base_dir/ci/create_codewind_index.py $base_dir
