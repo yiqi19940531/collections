@@ -18,10 +18,3 @@ assets_dir=$base_dir/ci/assets
 if [ -f $assets_dir/incubator-index.yaml ]; then
     mv $assets_dir/incubator-index.yaml $assets_dir/kabanero.yaml
 fi
-
-for full_excluded_stack in $EXCLUDED_STACKS
-do
-    excluded_repo=${full_excluded_stack%/*}
-    excluded_stack=${full_excluded_stack#*/}
-    rm $assets_dir/$excluded_repo.$excluded_stack.*
-done

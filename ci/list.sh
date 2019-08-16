@@ -64,3 +64,8 @@ fi
 # expose environment variable for stacks
 export STACKS_LIST=${STACKS_LIST[@]}
 echo "STACKS_LIST=$STACKS_LIST"
+
+if [ -f $base_dir/ci/ext/list.sh ]
+then
+    . $base_dir/ci/ext/list.sh 
+fi
