@@ -3,7 +3,7 @@ projects:
   java-microprofile:
   - updated: 2019-08-02T23:12:19+0000
     name: Eclipse MicroProfile®
-    version: 0.2.5
+    version: 0.2.6
     description: Eclipse MicroProfile using OpenJ9 and Maven
     license: Apache-2.0
     maintainers:
@@ -11,7 +11,7 @@ projects:
       - neeraj.laad@gmail.com
     default-template: default
     urls:
-    - https://github.com/appsody/stacks/releases/download/java-microprofile-v0.2.5/incubator.java-microprofile.templates.default.tar.gz
+    - https://github.com/appsody/stacks/releases/download/java-microprofile-v0.2.6/incubator.java-microprofile.templates.default.tar.gz
   java-spring-boot2:
   - updated: 2019-08-02T23:12:19+0000
     name: Spring Boot®
@@ -50,11 +50,23 @@ projects:
   swift:
   - updated: 2019-08-02T23:12:19+0000
     name: Swift
-    version: 0.1.1
+    version: 0.1.2
     description: Runtime for Swift applications
     license: Apache-2.0
     maintainers:
       - i.partridge@uk.ibm.com
     default-template: simple
     urls:
-    - https://github.com/appsody/stacks/releases/download/swift-v0.1.1/incubator.swift.templates.simple.tar.gz
+    - https://github.com/appsody/stacks/releases/download/swift-v0.1.2/incubator.swift.templates.simple.tar.gz
+  nodejs-loopback:
+  - created: 2019-07-26T21:00:00+00:00
+    name: nodejs-loopback
+    version: 0.1.0
+    description: LoopBack API framework for Node.js
+    keywords:
+    - Node.js
+    - LoopBack
+    maintainers:
+    - enjoyjava@gmail.com
+    urls:
+    - https://github.com/appsody/stacks/releases/download/nodejs-loopback-v0.1.0/incubator.nodejs-loopback.templates.scaffold.tar.gz
