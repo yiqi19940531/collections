@@ -27,7 +27,7 @@ fi
 # iterate over each asset
 for asset in $assets_dir/*
 do
-    if [[ $asset != *-test.yaml ]] && [[ $asset != *-v1.yaml ]]
+    if [[ $asset != *-local.yaml ]]
     then
         echo "Releasing: $asset"
         mv $asset $release_dir

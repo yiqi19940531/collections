@@ -31,7 +31,7 @@ The Appsody stacks are made available by creating a tagged GitHub release. Follo
 1. Untick __This is a pre-release__ checkbox
 1. Click __Update release__ button
 
-### Update v1 Index
+### Update v1 Index (Incubator stacks only)
 1. For now we are manually updating the [old appsody stacks index](https://github.com/appsody/stacks/blob/master/index.yaml)
 1. Create a pull request to update this file and update the index manually for the updated stack. Usually, we only need to update the `version` and `url` fields for the updated stack
 1. Submit the pull request
@@ -72,6 +72,12 @@ The script makes use of several Travis environment variables to determine which 
 1. In a pull request build, it lists stacks with modified or new `stack.yaml` files
 1. In a release build, it looks at the release tag and builds only the stack with matching id.
 1. If none of these criteria is matched, it will include all stacks.
+
+### Lint
+
+This script makes use of the **STACKS_LIST** to validate the file structure of the stacks. It verifies that each stack contains the correct directories in the correct places e.g. image and template directory. It also does a check that each stack contains the necessary files e.g. Dockerfile, stack.yaml etc.
+
+If a stack does not adhere to these rules, the lint will fail and exit. Otherwise the build process will continue.
 
 ### Package
 
