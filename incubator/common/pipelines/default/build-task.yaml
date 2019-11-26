@@ -21,7 +21,7 @@ spec:
     - name: assemble-extract
       securityContext:
         privileged: true
-      image: appsody/appsody-buildah
+      image: appsody/appsody-buildah:0.2.1
       command: ["/bin/bash"]
       args:
         - -c
@@ -35,7 +35,7 @@ spec:
     - name: validate-collection-is-active
       securityContext:
         privileged: true
-      image: kabanero/validate-collection
+      image: kabanero/validate-collection:0.1
       command: ["/bin/bash"]
       args:
         - -c
@@ -46,7 +46,7 @@ spec:
     - name: build-bud
       securityContext:
         privileged: true
-      image: appsody/appsody-buildah
+      image: appsody/appsody-buildah:0.2.1
       command: ['buildah', 'bud', '--tls-verify=false', '--format=docker', '-f', '${inputs.params.pathToDockerFile}', '-t', '${outputs.resources.docker-image.url}', '${inputs.params.pathToContext}']
       env:
         - name: gitsource
@@ -57,7 +57,7 @@ spec:
     - name: build-push
       securityContext:
         privileged: true
-      image: appsody/appsody-buildah
+      image: appsody/appsody-buildah:0.2.1
       command: ['buildah', 'push', '--tls-verify=false', '${outputs.resources.docker-image.url}', 'docker://${outputs.resources.docker-image.url}']
       env:
         - name: gitsource

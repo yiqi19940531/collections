@@ -65,7 +65,7 @@ spec:
           mountPath: /var/lib/containers
 
     - name: deploy-collections-index
-      image: lachlanevenson/k8s-kubectl
+      image: lachlanevenson/k8s-kubectl:v1.16.3
       command: ['/bin/sh']
       args:
         - -cex
