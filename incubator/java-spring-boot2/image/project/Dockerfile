@@ -1,28 +1,26 @@
-FROM {{APPSODY_STACK}} as compile
+FROM kabanero/ubi8-maven:0.3.0 as compile
 
-#setup project folder for java build step
+USER root
+
 COPY . /project
 
 WORKDIR /project/user-app
 
-USER root
-
-RUN /project/util/check_version build \
+RUN mkdir -p /mvn/repository \
+ && /project/util/check_version build \
  && /project/java-spring-boot2-build.sh package
 
 USER java_user
 
-####
-FROM kabanero/ubi8-openjdk:0.3.0
+### Base image for app.
 
-ARG artifactId=appsody-spring
-ARG version=1.0-SNAPSHOT
+### RHR
+## Requires Auth
+## FROM registry.redhat.io/redhat-openjdk-18/openjdk18-openshift:1.7
+## Unauthed as per https://access.redhat.com/containers/?tab=images&get-method=unauthenticated#/registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift
+FROM registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:1.7
+
 ENV JVM_ARGS=""
-
-LABEL maintainer="IBM Java Engineering at IBM Cloud"
-LABEL org.opencontainers.image.version=${version}
-LABEL org.opencontainers.image.title=${artifactId}
-LABEL appsody.stack="kabanero/java-spring-boot2:0.3.13"
 
 COPY --from=compile /project/user-app/target/app.jar /app.jar
 
