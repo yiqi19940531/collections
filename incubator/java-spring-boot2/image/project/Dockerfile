@@ -14,15 +14,22 @@ USER java_user
 
 ### Base image for app.
 
-### RHR
+### Red Hat Runtime image based on RHEL. Requires subscription.
 ## Requires Auth
 ## FROM registry.redhat.io/redhat-openjdk-18/openjdk18-openshift:1.7
 ## Unauthed as per https://access.redhat.com/containers/?tab=images&get-method=unauthenticated#/registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift
-FROM registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:1.7
+#FROM registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:1.7
+
+FROM kabanero/ubi8-openjdk:0.3.0
 
 ENV JVM_ARGS=""
 
+RUN groupadd --gid 1000 java_group \
+  && useradd --uid 1000 --gid java_group --shell /bin/bash --create-home java_user
+
 COPY --from=compile /project/user-app/target/app.jar /app.jar
+
+USER java_user
 
 EXPOSE 8080
 EXPOSE 8443
