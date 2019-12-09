@@ -26,6 +26,5 @@ then
     export IMAGE_REGISTRY_ORG="kabanero"
 fi
 if [ -z "$LATEST_RELEASE" ]; then
-    export LATEST_RELEASE=false
+    export LATEST_RELEASE=true
 fi
-
