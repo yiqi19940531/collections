@@ -25,3 +25,6 @@ if [ -z "$IMAGE_REGISTRY_ORG" ]
 then
     export IMAGE_REGISTRY_ORG="kabanero"
 fi
+if [ -z "$LATEST_RELEASE" ]; then
+    export LATEST_RELEASE=true
+fi
