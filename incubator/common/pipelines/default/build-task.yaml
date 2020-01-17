@@ -68,9 +68,9 @@ spec:
         - name: DEFAULT_COLLECTION_IMAGE_REGISTRY_URL
           valueFrom:
             configMapKeyRef:
-            name: collection-image-registry-map
-            key: default-collection-image-registry-url
-            optional: true
+              name: collection-image-registry-map
+              key: default-collection-image-registry-url
+              optional: true
         - name: DEFAULT_COLLECTION_IMAGE_REGISTRY_SECRET_USERNAME
           valueFrom:
             secretKeyRef:
