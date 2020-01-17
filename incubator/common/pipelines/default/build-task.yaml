@@ -42,7 +42,7 @@ spec:
               echo "DEFAULT_COLLECTION_IMAGE_REGISTRY_URL=$DEFAULT_COLLECTION_IMAGE_REGISTRY_URL given as input by user is empty, so using the registry for collection image download from ${inputs.params.appsody-yaml-file-path}"
           else
               #Replacing the container registry from index.docker.io to DEFAULT_COLLECTION_IMAGE_REGISTRY_URL for collection image download in the file inputs.params.appsody-yaml-file-path
-              sed -i -e 's#images: .*$#images: ${DEFAULT_COLLECTION_IMAGE_REGISTRY_URL}#g' ${inputs.params.appsody-yaml-file-path}
+              sed -i -e "s#images: .*\$#images: ${DEFAULT_COLLECTION_IMAGE_REGISTRY_URL}#g" ${inputs.params.appsody-yaml-file-path}
               echo "sed command completed successfully"
                 
               #Creating a cert for authentication of buildah login of the DEFAULT_COLLECTION_IMAGE_REGISTRY_URL registry url 
