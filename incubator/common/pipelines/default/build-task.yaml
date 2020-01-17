@@ -62,34 +62,34 @@ spec:
               ./cert-creation.sh
           fi
           /extract.sh
-    env:
-      - name: gitsource
-        value: git-source
-      - name: DEFAULT_COLLECTION_IMAGE_REGISTRY_URL
-        valueFrom:
-          configMapKeyRef:
-          name: collection-image-registry-map
-          key: default-collection-image-registry-url
-          optional: true
-      - name: DEFAULT_COLLECTION_IMAGE_REGISTRY_SECRET_USERNAME
-        valueFrom:
-          secretKeyRef:
-            name: default-collection-image-registry-secret
-            key: username
+      env:
+        - name: gitsource
+          value: git-source
+        - name: DEFAULT_COLLECTION_IMAGE_REGISTRY_URL
+          valueFrom:
+            configMapKeyRef:
+            name: collection-image-registry-map
+            key: default-collection-image-registry-url
             optional: true
-      - name: DEFAULT_COLLECTION_IMAGE_REGISTRY_SECRET_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: default-collection-image-registry-secret
-            key: password
-            optional: true
-    volumeMounts:
-      - mountPath: /var/lib/containers
-        name: varlibcontainers
-      - name: config-volume
-        mountPath: /config
-      - name: secret-volume
-        mountPath: /etc/secret-volume
+        - name: DEFAULT_COLLECTION_IMAGE_REGISTRY_SECRET_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: default-collection-image-registry-secret
+              key: username
+              optional: true
+        - name: DEFAULT_COLLECTION_IMAGE_REGISTRY_SECRET_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: default-collection-image-registry-secret
+              key: password
+              optional: true
+      volumeMounts:
+        - mountPath: /var/lib/containers
+          name: varlibcontainers
+        - name: config-volume
+          mountPath: /config
+        - name: secret-volume
+          mountPath: /etc/secret-volume
     - name: validate-collection-is-active
       securityContext:
         privileged: true
