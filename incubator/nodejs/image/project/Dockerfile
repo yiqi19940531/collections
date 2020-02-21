@@ -7,10 +7,8 @@ RUN yum upgrade --disableplugin=subscription-manager -y \
  && yum clean --disableplugin=subscription-manager packages \
  && useradd --uid 1000 --gid 0 --shell /bin/bash --create-home node
 
-COPY .* /project/
-COPY *.* /project/
-COPY Dockerfile /project/
-COPY user-app /project/user-app/
+COPY package*.json /project/
+COPY user-app /project/user-app
 
 # Install user-app dependencies
 WORKDIR "/project/user-app"

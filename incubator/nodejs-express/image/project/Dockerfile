@@ -19,11 +19,9 @@ WORKDIR /project/user-app
 COPY ./user-app/package*.json ./
 RUN npm install --production
 
-COPY .* /project/
-COPY *.* /project/
-COPY Dockerfile /project/
-COPY test /project/test/
-COPY user-app /project/user-app/
+COPY package*.json /project/
+COPY *.js /project/
+COPY user-app /project/user-app
 
 RUN chown -hR node:0 /project \
  && chmod -R g=u /project
