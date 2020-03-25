@@ -1,0 +1,13 @@
+name: Node.js Express Express with helmet
+version: 0.4.6
+description: Express web framework for Node.js with helmet
+license: Apache-2.0
+language: nodejs
+maintainers:
+  - name: Sam Roberts
+    email: vieuxtech@gmail.com
+    github-id: sam-github
+default-template: simple
+requirements:
+  docker-version: ">= 17.09.0"
+  appsody-version: ">= 0.2.7"
